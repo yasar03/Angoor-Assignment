@@ -66,7 +66,7 @@ const MainComponent = () => {
                 text: 'Filtered Data'
               },
               series: [{
-                data: filteredData.length
+                data: filteredData.map(item => item.id.length) // Dummy data for example
               }]
             }}
           />
