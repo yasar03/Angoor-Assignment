@@ -49,7 +49,7 @@ const Header = () => {
   return (
     <AppBar position="static">
       <Toolbar>
-        <IconButton
+        {/* <IconButton
           size="large"
           edge="start"
           color="inherit"
@@ -57,7 +57,7 @@ const Header = () => {
           sx={{ mr: 2 }}
         >
           <MenuIcon />
-        </IconButton>
+        </IconButton> */}
         <img src={Logo} alt="Logo" height="40" style={{ marginRight: '10px' }} />
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           {/* Add title or app name here */}

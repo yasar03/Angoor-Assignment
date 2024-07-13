@@ -1,135 +1,140 @@
 // src/components/Sidebar.js
-import React from 'react';
-import Drawer from '@mui/material/Drawer';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import Collapse from '@mui/material/Collapse';
-import { ExpandLess, ExpandMore, Menu as MenuIcon, ChevronLeft, ChevronRight } from '@mui/icons-material';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import {
+  Drawer,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Collapse,
+  IconButton,
+  Divider,
+  Box
+} from '@mui/material';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
-import ExtensionIcon from '@mui/icons-material/Extension';
-import SettingsIcon from '@mui/icons-material/Settings';
-import AppsIcon from '@mui/icons-material/Apps';
-import CategoryIcon from '@mui/icons-material/Category';
-import WhatsAppIcon from '@mui/icons-material/WhatsApp';
-import WidgetsIcon from '@mui/icons-material/Widgets';
-
-import Logo from '../assets/logo.png'; // Replace with your actual logo
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import MenuIcon from '@mui/icons-material/Menu';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
 const Sidebar = () => {
-  const [open, setOpen] = React.useState(true);
-  const [collapsed, setCollapsed] = React.useState(false);
+  const [open, setOpen] = useState(true);
+  const [pluginsOpen, setPluginsOpen] = useState(true);
+  const [deploymentsOpen, setDeploymentsOpen] = useState(true);
+  const navigate = useNavigate();
 
   const toggleSidebar = () => {
-    setCollapsed(!collapsed);
+    setOpen(!open);
   };
 
-  const handleClick = () => {
-    setOpen(!open);
+  const togglePlugins = () => {
+    setPluginsOpen(!pluginsOpen);
+  };
+
+  const toggleDeployments = () => {
+    setDeploymentsOpen(!deploymentsOpen);
   };
 
   return (
     <Drawer
       variant="permanent"
       sx={{
-        width: collapsed ? 56 : 240,
+        width: open ? 240 : 56,
         flexShrink: 0,
         '& .MuiDrawer-paper': {
-          width: collapsed ? 56 : 240,
+          width: open ? 240 : 56,
           boxSizing: 'border-box',
-          transition: 'width 0.2s ease-out',
+          transition: 'width 0.3s',
         },
       }}
     >
       <List>
-        {/* Sidebar Header */}
-        <ListItem sx={{ justifyContent: 'flex-end', p: 0 }}>
-          <ListItemIcon onClick={toggleSidebar} sx={{ cursor: 'pointer', mr: -2 }}>
-            {collapsed ? <ChevronRight /> : <ChevronLeft />}
-          </ListItemIcon>
-        </ListItem>
-
-        {/* Logo */}
-        {/* <ListItem sx={{ justifyContent: 'center', p: 0 }}>
-          <img src={Logo} alt="Logo" height="40" style={{ marginRight: '10px' }} />
-        </ListItem> */}
-
-        {/* Plug-In Management */}
-        <ListItem button onClick={handleClick}>
+        <ListItem button onClick={toggleSidebar}>
           <ListItemIcon>
-            <ExtensionIcon />
+            {open ? <ChevronLeftIcon /> : <ChevronRightIcon />}
           </ListItemIcon>
-          {!collapsed && <ListItemText primary="Plug-In Management" />}
-          {open ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
-        <Collapse in={open} timeout="auto" unmountOnExit>
+        <Divider />
+        <ListItem button onClick={togglePlugins}>
+          <ListItemIcon>
+            <InboxIcon />
+          </ListItemIcon>
+          {open && <ListItemText primary="Plug-In Management" />}
+          {pluginsOpen ? <ExpandLess /> : <ExpandMore />}
+        </ListItem>
+        <Collapse in={pluginsOpen} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
-            <ListItem button sx={{ pl: collapsed ? 1 : 4 }}>
-              <ListItemIcon>
-                <AppsIcon />
-              </ListItemIcon>
-              {!collapsed && <ListItemText primary="Agents" />}
-            </ListItem>
-            <ListItem button sx={{ pl: collapsed ? 1 : 4 }}>
-              <ListItemIcon>
-                <CategoryIcon />
-              </ListItemIcon>
-              {!collapsed && <ListItemText primary="Flows" />}
-            </ListItem>
-            <ListItem button sx={{ pl: collapsed ? 1 : 4 }}>
-              <ListItemIcon>
-                <SettingsIcon />
-              </ListItemIcon>
-              {!collapsed && <ListItemText primary="Forms" />}
-            </ListItem>
-            <ListItem button sx={{ pl: collapsed ? 1 : 4 }}>
-              <ListItemIcon>
-                <InboxIcon />
-              </ListItemIcon>
-              {!collapsed && <ListItemText primary="Tools" />}
-            </ListItem>
-            <ListItem button sx={{ pl: collapsed ? 1 : 4 }}>
+            <ListItem button onClick={() => navigate('/agents')}>
               <ListItemIcon>
                 <MailIcon />
               </ListItemIcon>
-              {!collapsed && <ListItemText primary="Integrations" />}
+              {open && <ListItemText primary="Agents" />}
+            </ListItem>
+            <ListItem button onClick={() => navigate('/flows')}>
+              <ListItemIcon>
+                <MailIcon />
+              </ListItemIcon>
+              {open && <ListItemText primary="Flows" />}
+            </ListItem>
+            <ListItem button onClick={() => navigate('/forms')}>
+              <ListItemIcon>
+                <MailIcon />
+              </ListItemIcon>
+              {open && <ListItemText primary="Forms" />}
+            </ListItem>
+            <ListItem button onClick={() => navigate('/tools')}>
+              <ListItemIcon>
+                <MailIcon />
+              </ListItemIcon>
+              {open && <ListItemText primary="Tools" />}
+            </ListItem>
+            <ListItem button onClick={() => navigate('/integrations')}>
+              <ListItemIcon>
+                <MailIcon />
+              </ListItemIcon>
+              {open && <ListItemText primary="Integrations" />}
             </ListItem>
           </List>
         </Collapse>
-
-        {/* Deployments */}
-        <ListItem button onClick={handleClick}>
+        <ListItem button onClick={toggleDeployments}>
           <ListItemIcon>
-            <WidgetsIcon />
+            <InboxIcon />
           </ListItemIcon>
-          {!collapsed && <ListItemText primary="Deployments" />}
-          {open ? <ExpandLess /> : <ExpandMore />}
+          {open && <ListItemText primary="Deployments" />}
+          {deploymentsOpen ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
-        <Collapse in={open} timeout="auto" unmountOnExit>
+        <Collapse in={deploymentsOpen} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
-            <ListItem button sx={{ pl: collapsed ? 1 : 4 }}>
+            <ListItem button>
               <ListItemIcon>
-                <WhatsAppIcon />
+                <MailIcon />
               </ListItemIcon>
-              {!collapsed && <ListItemText primary="WhatsApp" />}
+              {open && <ListItemText primary="Whatsapp" />}
             </ListItem>
-            <ListItem button sx={{ pl: collapsed ? 1 : 4 }}>
+            <ListItem button>
               <ListItemIcon>
-                <WidgetsIcon />
+                <MailIcon />
               </ListItemIcon>
-              {!collapsed && <ListItemText primary="Widget" />}
+              {open && <ListItemText primary="Widget" />}
             </ListItem>
-            <ListItem button sx={{ pl: collapsed ? 1 : 4 }}>
+            <ListItem button>
               <ListItemIcon>
-                <CategoryIcon />
+                <MailIcon />
               </ListItemIcon>
-              {!collapsed && <ListItemText primary="Widget Components" />}
+              {open && <ListItemText primary="Widget Components" />}
             </ListItem>
           </List>
         </Collapse>
       </List>
+      <Box sx={{ flexGrow: 1 }} />
+      <ListItem button onClick={toggleSidebar}>
+        <ListItemIcon>
+          {open ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+        </ListItemIcon>
+      </ListItem>
     </Drawer>
   );
 };

@@ -1,29 +1,24 @@
+// src/App.js
 import React from 'react';
-import { ThemeProvider } from '@mui/material/styles';
-import { CssBaseline } from '@mui/material';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import GlobalStyle from './styles/GlobalStyle';
-import theme from './styles/theme';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
-import Home from './pages/Home';
+import Agents from './components/Agents'; // Import Agents component
 
 const App = () => {
   return (
-    <ThemeProvider theme={theme}>
-      <Router>
-        <GlobalStyle />
-        <CssBaseline />
-        <Header />
-        <div style={{ display: 'flex' }}>
-          <Sidebar />
+    <Router>
+      <div style={{ display: 'flex' }}>
+        <Sidebar />
+        <div style={{ flex: 1 }}>
+          <Header />
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/agents" element={<Agents />} />
             {/* Add other routes here */}
           </Routes>
         </div>
-      </Router>
-    </ThemeProvider>
+      </div>
+    </Router>
   );
 };
 
